@@ -2,6 +2,8 @@
 import {readFileSync} from 'fs';
 import {writeFileSync} from 'fs';
 
+const DATA_FILE_PATH = './server/content.txt';
+
 // serve file with given mime type
 const serveFile = (filePath, mimeType) => {
     return ((req, res) => {
@@ -14,20 +16,19 @@ const serveFile = (filePath, mimeType) => {
 const homePage = serveFile('./public/index.html', 'text/html');
 const favIcon = serveFile('./public/favicon.ico', 'image/ico');
 const indexJs = serveFile('./client/index.js', 'text/javascript');
-const readFileFromServer = serveFile('./server/Drei_Zeilen.txt', 'text/plain')
+const readFileFromServer = serveFile(DATA_FILE_PATH, 'text/plain')
 
 export {homePage, favIcon, indexJs, readFileFromServer };
 
-// read Textfile
+// read text file
 // same as in 'serveFile' but stand alone
 export function readFileFromServer_extra(req, res) {	
 	res.setHeader('Content-Type', 'text/plain');
     res.writeHead(200);
-    res.end(readFileSync('server/Drei_Zeilen.txt'));
-	}
+    res.end(readFileSync(DATA_FILE_PATH));
+}
 	
-
-//write Textfile
+// write text file
 // see: https://nodejs.dev/learn/get-http-request-body-data-using-nodejs
 export function writeFileToServer(req, res) {
 	let data = '';
@@ -37,7 +38,7 @@ export function writeFileToServer(req, res) {
 	req.on('end', () => {
 		res.setHeader('Content-Type', 'text/plain');
         res.writeHead(200);
-        res.end(writeFileSync('server/Drei_Zeilen.txt', data));
+        res.end(writeFileSync(DATA_FILE_PATH, data));
 	  })
 	}
 
